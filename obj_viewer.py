@@ -1,10 +1,10 @@
-import json
-import pickle
 import sys
 
 from PyQt5.QtGui import QFont
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QApplication
+
+from readers import read_obj
 
 HTML_TEMPLATE = """
 <!DOCTYPE html>
@@ -114,35 +114,6 @@ def obj_to_html(obj, style="colorful"):
     html = HTML_TEMPLATE.format(css=BASE_CSS, body=body, javascript=BASE_JAVASCRIPT)
 
     return html
-
-
-def create_dummy_class(name):
-    x = type(name, (), {})
-    setattr(x, "__setstate__", lambda x: None)
-    setattr(x, "__module__", None)
-    return x
-
-
-class PartialUnpickler(pickle.Unpickler):
-    def find_class(self, module, name):
-        try:
-            return super().find_class(module, name)
-        except ImportError:
-            return lambda *args: create_dummy_class(module)
-
-
-def read_obj(path: str):
-    if path.endswith(".pkl"):
-        with open(path, "rb") as in_file:
-            data = pickle.load(in_file)
-            # data = PartialUnpickler(in_file).load()
-    elif path.endswith(".json"):
-        with open(path, "rb") as in_file:
-            data = json.load(in_file)
-    else:
-        raise ValueError("Unknown file type")
-
-    return data
 
 
 def _init_text_browser(html, font_size=12, sizes=(800, 600)):
