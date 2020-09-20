@@ -34,7 +34,7 @@ def load_json(path):
 
 def load_npy(path):
     import numpy as np
-    return np.load(path)
+    return np.load(path, mmap_mode="r")
 
 
 LOADERS = {

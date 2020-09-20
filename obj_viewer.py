@@ -101,7 +101,8 @@ def to_html(obj, indent=1):
             ",<br>".join(htmls),
         )
 
-    if "numpy.ndarray" in str(obj.__class__):
+    type_name = str(obj.__class__)
+    if "numpy.ndarray" in type_name or "numpy.memmap" in type_name:
         name = f"np.ndarray with shape={obj.shape}; dtype={obj.dtype}"
         return EXPANDABLE_PATTERN.format(name=name, content=str(obj))
 
