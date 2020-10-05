@@ -17,11 +17,6 @@ class PartialUnpickler(pickle.Unpickler):
             return lambda *args: create_dummy_class(module)
 
 
-def load_bin(path):
-    import numpy as np
-    return np.fromfile(path, dtype=np.float32)
-
-
 def load_pickle(path):
     with open(path, "rb") as in_file:
         return PartialUnpickler(in_file).load()
@@ -37,11 +32,17 @@ def load_npy(path):
     return np.load(path, mmap_mode="r")
 
 
+def load_npz(path):
+    import numpy as np
+    d = np.load(path)
+    return [d[name] for name in d.keys()]
+
+
 LOADERS = {
     "pkl": load_pickle,
     "json": load_json,
     "npy": load_npy,
-    "bin": load_bin,
+    "npz": load_npz,
 }
 
 
