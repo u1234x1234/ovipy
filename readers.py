@@ -38,11 +38,25 @@ def load_npz(path):
     return [d[name] for name in d.keys()]
 
 
+def load_pkll(path):
+    results = []
+    with open(path, "rb") as in_file:
+        while True:
+            try:
+                item = pickle.load(in_file)
+                results.append(item)
+            except EOFError:
+                break
+
+    return results
+
+
 LOADERS = {
     "pkl": load_pickle,
     "json": load_json,
     "npy": load_npy,
     "npz": load_npz,
+    "pkll": load_pkll,
 }
 
 
