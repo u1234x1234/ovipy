@@ -44,6 +44,11 @@ def to_html(obj, indent=1):
         if os.path.exists(obj):
             return expandable_image(obj)
 
+    if "DataFrame" in type_name:
+        name = f"pd.DataFrame with shape={obj.shape};"
+        content = obj.iloc[list(range(5)) + list(range(-5, 0))].to_html()
+        return EXPANDABLE_PATTERN.format(name=name, content=content)
+
     return str(obj)
 
 
