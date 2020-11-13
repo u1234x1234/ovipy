@@ -11,32 +11,43 @@ from .web_templates import (
     BASE_JAVASCRIPT,
     HTML_TEMPLATE,
 )
-from .formatters import FORMATTERS
+from .formatters import FORMATTERS, get_expandable_html
+
+LIST_LEN_LIMIT = 30
+DICT_LEN_LIMIT = 30
 
 
 def to_html(obj, indent=1):
     if isinstance(obj, list):
-        htmls = []
+        items = []
         for k in obj:
-            htmls.append(to_html(k, indent + 1))
+            items.append(to_html(k, indent + 1))
 
-        return '[<div style="margin-left: %dem">%s</div>]' % (
+        list_str = '[<div style="margin-left: %dem">%s</div>]' % (
             indent,
-            ",<br>".join(htmls),
+            ",<br>".join(items),
         )
+        if len(items) > LIST_LEN_LIMIT:
+            list_str = get_expandable_html(f"python list with {len(items)} elements", list_str)
+
+        return list_str
 
     if isinstance(obj, dict):
-        htmls = []
+        items = []
         for k, v in obj.items():
-            htmls.append(
+            items.append(
                 "<span style='font-style: italic; color: #888'>%s</span>: %s"
                 % (k, to_html(v, indent + 1))
             )
 
-        return '{<div style="margin-left: %dem">%s</div>}' % (
+        dict_str = '{<div style="margin-left: %dem">%s</div>}' % (
             indent,
-            ",<br>".join(htmls),
+            ",<br>".join(items),
         )
+        if len(items) > DICT_LEN_LIMIT:
+            dict_str = get_expandable_html(f"python dict with {len(items)} elements", dict_str)
+
+        return dict_str
 
     for formatter in FORMATTERS:
         f_obj = formatter(obj)

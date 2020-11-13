@@ -50,7 +50,7 @@ img{
 """
 
 EXPANDABLE_PATTERN = """
-<button type="button" class="collapsible">{name}</button>
+<button type="button" class="collapsible" style='background-color: #{color}'>{name}</button>
 <div class="content">
     <p>{content}</p>
 </div>
@@ -72,6 +72,10 @@ for (i = 0; i < coll.length; i++) {
    });
 }
 """
+
+
+def get_expandable_html(name, content, color="eee"):
+    return EXPANDABLE_PATTERN.format(name=name, content=content, color=color)
 
 
 def expandable_image(path):
