@@ -6,9 +6,12 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QApplication
 
-from readers import read_obj
-from web_templates import (BASE_CSS, BASE_JAVASCRIPT, EXPANDABLE_PATTERN,
-                           HTML_TEMPLATE, expandable_image)
+from .web_templates import (
+    BASE_CSS,
+    BASE_JAVASCRIPT,
+    HTML_TEMPLATE,
+)
+from .formatters import FORMATTERS
 
 
 def to_html(obj, indent=1):
@@ -35,19 +38,10 @@ def to_html(obj, indent=1):
             ",<br>".join(htmls),
         )
 
-    type_name = str(obj.__class__)
-    if "numpy.ndarray" in type_name or "numpy.memmap" in type_name:
-        name = f"np.ndarray with shape={obj.shape}; dtype={obj.dtype}"
-        return EXPANDABLE_PATTERN.format(name=name, content=str(obj))
-
-    if isinstance(obj, str) and obj.endswith("png"):  # Looks like a path
-        if os.path.exists(obj):
-            return expandable_image(obj)
-
-    if "DataFrame" in type_name:
-        name = f"pd.DataFrame with shape={obj.shape};"
-        content = obj.iloc[list(range(5)) + list(range(-5, 0))].to_html()
-        return EXPANDABLE_PATTERN.format(name=name, content=content)
+    for formatter in FORMATTERS:
+        f_obj = formatter(obj)
+        if f_obj is not None:
+            return f_obj
 
     return str(obj)
 
@@ -80,8 +74,3 @@ def show_object(obj):
     browser.show()
 
     sys.exit(app.exec_())
-
-
-if __name__ == "__main__":
-    py_obj = read_obj(sys.argv[1])
-    show_object(py_obj)

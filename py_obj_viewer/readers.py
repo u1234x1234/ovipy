@@ -1,5 +1,5 @@
-import pickle
 import json
+import pickle
 
 
 def create_dummy_class(name):
@@ -29,11 +29,13 @@ def load_json(path):
 
 def load_npy(path):
     import numpy as np
+
     return np.load(path, mmap_mode="r")
 
 
 def load_npz(path):
     import numpy as np
+
     d = np.load(path)
     return [d[name] for name in d.keys()]
 
