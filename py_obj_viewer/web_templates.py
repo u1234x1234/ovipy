@@ -30,9 +30,13 @@ BASE_CSS = """
     font-size: 15px;
 }
 
-img{
+img {
     max-width: 300px;
     max-height: 300px;
+}
+
+body {
+    background-color: rgb(250, 250, 250);
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
@@ -45,14 +49,14 @@ img{
     padding: 0 18px;
     display: none;
     overflow: hidden;
-    background-color: #f1f1f1;
+    background-color: #ffffff;
 }
 """
 
 EXPANDABLE_PATTERN = """
 <button type="button" class="collapsible" style='background-color: #{color}'>{name}</button>
 <div class="content">
-    <p>{content}</p>
+    {content}
 </div>
 """
 

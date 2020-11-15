@@ -11,46 +11,13 @@ from .web_templates import (
     BASE_JAVASCRIPT,
     HTML_TEMPLATE,
 )
-from .formatters import FORMATTERS, get_expandable_html
-
-LIST_LEN_LIMIT = 30
-DICT_LEN_LIMIT = 30
+from .formatters import FORMATTERS
 
 
 def to_html(obj, indent=1):
-    if isinstance(obj, list):
-        items = []
-        for k in obj:
-            items.append(to_html(k, indent + 1))
-
-        list_str = '[<div style="margin-left: %dem">%s</div>]' % (
-            indent,
-            ",<br>".join(items),
-        )
-        if len(items) > LIST_LEN_LIMIT:
-            list_str = get_expandable_html(f"python list with {len(items)} elements", list_str)
-
-        return list_str
-
-    if isinstance(obj, dict):
-        items = []
-        for k, v in obj.items():
-            items.append(
-                "<span style='font-style: italic; color: #888'>%s</span>: %s"
-                % (k, to_html(v, indent + 1))
-            )
-
-        dict_str = '{<div style="margin-left: %dem">%s</div>}' % (
-            indent,
-            ",<br>".join(items),
-        )
-        if len(items) > DICT_LEN_LIMIT:
-            dict_str = get_expandable_html(f"python dict with {len(items)} elements", dict_str)
-
-        return dict_str
 
     for formatter in FORMATTERS:
-        f_obj = formatter(obj)
+        f_obj = formatter(obj, to_html, indent)
         if f_obj is not None:
             return f_obj
 
