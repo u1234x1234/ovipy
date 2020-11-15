@@ -39,18 +39,26 @@ body {
     background-color: rgb(250, 250, 250);
 }
 
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active, .collapsible:hover {
     background-color: #ccc;
 }
 
-/* Style the collapsible content. Note: hidden by default */
 .content {
     padding: 0 18px;
     display: none;
     overflow: hidden;
     background-color: #ffffff;
 }
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 5px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
 """
 
 EXPANDABLE_PATTERN = """
@@ -61,11 +69,11 @@ EXPANDABLE_PATTERN = """
 """
 
 BASE_JAVASCRIPT = """
-var coll = document.getElementsByClassName("collapsible");
+var items = document.getElementsByClassName("collapsible");
 var i;
 
-for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
+for (i = 0; i < items.length; i++) {
+    items[i].addEventListener("click", function() {
      this.classList.toggle("active");
      var content = this.nextElementSibling;
      if (content.style.display === "block") {
