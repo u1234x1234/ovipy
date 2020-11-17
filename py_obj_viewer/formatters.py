@@ -88,11 +88,11 @@ def _torch_formatter(obj, to_html=None, indent=1):
         return get_expandable_html(name=name, content=str(obj), color="aae")
 
 
-def _large_obj_formatter(obj, to_html=None, indent=1, n_lines_limit=15):
+def _large_obj_formatter(obj, to_html=None, indent=1, n_lines_limit=15, str_len_limit=10_000):
     s_obj = str(obj)
     n_lines = s_obj.count("\n")
-    if n_lines > n_lines_limit:
-        name = f"{type(obj)}"
+    if n_lines > n_lines_limit or len(s_obj) > str_len_limit:
+        name = f"{full_object_name(obj)} with length {len(s_obj)}"
         return get_expandable_html(name=name, content=s_obj)
 
 
