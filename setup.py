@@ -27,5 +27,5 @@ setup(
         "Topic :: Utilities",
         "License :: OSI Approved :: MIT License",
     ],
-    scripts=["bin/ipyov_read_file"],
+    scripts=["bin/read_file_ipyov"],
 )
