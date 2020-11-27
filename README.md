@@ -2,6 +2,7 @@
 
 # Installation
 ```
+pip install PyQt5 PyQtWebEngine
 pip install git+https://github.com/u1234x1234/ipyov.git@0.0.1
 ```
 
