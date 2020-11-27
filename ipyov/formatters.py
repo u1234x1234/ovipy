@@ -65,7 +65,7 @@ def _numpy_formatter(obj, to_html=None, indent=1):
         else:
             s_obj = str(obj)
 
-        return get_expandable_html(name=name, content=s_obj, color="eaa")
+        return get_expandable_html(name=name, content=s_obj, color="daa")
 
 
 def _image_path_formatter(obj, to_html=None, indent=1):
@@ -78,17 +78,24 @@ def _pandas_formatter(obj, to_html=None, indent=1):
     if "DataFrame" in str(obj.__class__):
         name = f"pd.DataFrame with shape={obj.shape};"
         content = get_pandas_preview(obj)
-        return get_expandable_html(name=name, content=content)
+        return get_expandable_html(name=name, content=content, color="ada")
 
 
 def _torch_formatter(obj, to_html=None, indent=1):
     type_name = str(obj.__class__)
     if "torch.Tensor" in type_name:
         name = f"torch.Tensor with shape={list(obj.shape)}; dtype={obj.dtype}; device={obj.device}"
-        return get_expandable_html(name=name, content=str(obj), color="aae")
+        if len(obj.shape) == 2:
+            s_obj = get_pandas_preview(pd.DataFrame(obj.cpu().numpy()))
+        else:
+            s_obj = str(obj)
+
+        return get_expandable_html(name=name, content=s_obj, color="aad")
 
 
-def _large_obj_formatter(obj, to_html=None, indent=1, n_lines_limit=15, str_len_limit=10_000):
+def _large_obj_formatter(
+    obj, to_html=None, indent=1, n_lines_limit=15, str_len_limit=10_000
+):
     s_obj = str(obj)
     n_lines = s_obj.count("\n")
     if n_lines > n_lines_limit or len(s_obj) > str_len_limit:

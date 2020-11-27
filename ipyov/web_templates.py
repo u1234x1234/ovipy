@@ -2,7 +2,7 @@ HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>py_obj_viewer</title>
+    <title>pyov</title>
     <style>
         {css}
     </style>

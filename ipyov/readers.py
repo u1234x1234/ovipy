@@ -2,19 +2,19 @@ import json
 import pickle
 
 
-def create_dummy_class(name):
-    x = type(name, (), {})
-    setattr(x, "__setstate__", lambda x: None)
-    setattr(x, "__module__", None)
-    return x
+class DummyClass:
+    pass
 
 
 class PartialUnpickler(pickle.Unpickler):
     def find_class(self, module, name):
         try:
             return super().find_class(module, name)
-        except ImportError:
-            return lambda *args: create_dummy_class(module)
+        except Exception as e:
+            x = DummyClass
+            setattr(x, "__module__", module)
+            setattr(x, "__name__", "{} unpickling error: {}".format(name, e))
+            return x
 
 
 def load_pickle(path):
