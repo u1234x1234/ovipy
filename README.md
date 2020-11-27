@@ -1,7 +1,11 @@
 # ipyov - Interactive visualizer of python objects.
 
-# Usage
+# Installation
+```
+pip install git+https://github.com/u1234x1234/ipyov.git@0.0.1
+```
 
+# Usage
 ```python
 from ipyov import show_object
 
