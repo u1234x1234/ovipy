@@ -18,6 +18,7 @@ setup(
     url="https://github.com/u1234x1234/ipyov",
     packages=["ipyov"],
     zip_safe=False,
+    install_requires=["PyQt5>=5", "PyQtWebEngine>=5", "pandas>=1"],
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     classifiers=[
