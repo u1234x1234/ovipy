@@ -53,12 +53,18 @@ def load_pkll(path):
     return results
 
 
+def load_torch(path):
+    import torch
+    return torch.load(path)
+
+
 LOADERS = {
     "pkl": load_pickle,
     "json": load_json,
     "npy": load_npy,
     "npz": load_npz,
     "pkll": load_pkll,
+    "pt": load_torch,
 }
 
 
