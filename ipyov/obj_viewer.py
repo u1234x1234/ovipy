@@ -1,17 +1,14 @@
 import os
 import sys
+from tempfile import NamedTemporaryFile
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QFont
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QApplication
 
-from .web_templates import (
-    BASE_CSS,
-    BASE_JAVASCRIPT,
-    HTML_TEMPLATE,
-)
 from .formatters import FORMATTERS
+from .web_templates import BASE_CSS, BASE_JAVASCRIPT, HTML_TEMPLATE
 
 
 def to_html(obj, indent=1):
@@ -32,9 +29,9 @@ def obj_to_html(obj, style="colorful"):
     return html
 
 
-def _init_text_browser(html, font_size=12, sizes=(800, 600)):
+def _init_text_browser(path, font_size=12, sizes=(800, 600)):
     browser = QWebEngineView()
-    browser.setHtml(html, baseUrl=QUrl.fromLocalFile(os.path.abspath(__file__)))
+    browser.load(QUrl.fromLocalFile(os.path.abspath(path)))
 
     font = QFont()
     font.setPointSize(font_size)
@@ -48,7 +45,17 @@ def show_object(obj):
     html = obj_to_html(obj)
 
     app = QApplication(sys.argv)
-    browser = _init_text_browser(html)
-    browser.show()
 
-    sys.exit(app.exec_())
+    with NamedTemporaryFile("wb", buffering=0, suffix=".html") as out_file:
+        out_file.write(html.encode("utf-8"))
+        out_file.flush()
+
+        browser = _init_text_browser(out_file.name)
+        browser.show()
+        sys.exit(app.exec_())
+
+
+def save_to_html(obj, path):
+    html = obj_to_html(obj)
+    with open(path, "w") as out_file:
+        print(html, file=out_file)

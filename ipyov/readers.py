@@ -58,6 +58,20 @@ def load_torch(path):
     return torch.load(path)
 
 
+def load_cloudpickle(path):
+    import cloudpickle
+    with open(path, "rb") as in_file:
+        data = cloudpickle.load(in_file)
+
+    return data
+
+
+def load_dill(path):
+    import dill
+    with open(path, "rb") as in_file:
+        return dill.load(in_file)
+
+
 LOADERS = {
     "pkl": load_pickle,
     "json": load_json,
@@ -65,6 +79,8 @@ LOADERS = {
     "npz": load_npz,
     "pkll": load_pkll,
     "pt": load_torch,
+    "cloudpickle": load_cloudpickle,
+    "dill": load_dill,
 }
 
 
