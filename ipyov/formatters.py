@@ -13,7 +13,7 @@ NUMPY_2D_LIMIT = 10
 
 def _list_formatter(obj, to_html, indent=1):
 
-    if isinstance(obj, list):
+    if isinstance(obj, (list, tuple)):
         items = []
         for k in obj:
             items.append(to_html(k, indent + 1))
