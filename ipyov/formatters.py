@@ -86,7 +86,7 @@ def _torch_formatter(obj, to_html=None, indent=1):
     if "torch.Tensor" in type_name:
         name = f"torch.Tensor with shape={list(obj.shape)}; dtype={obj.dtype}; device={obj.device}"
         if len(obj.shape) == 2:
-            s_obj = get_pandas_preview(pd.DataFrame(obj.cpu().numpy()))
+            s_obj = get_pandas_preview(pd.DataFrame(obj.detach().cpu().numpy()))
         else:
             s_obj = str(obj)
 
