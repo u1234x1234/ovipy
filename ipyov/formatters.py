@@ -118,12 +118,23 @@ def full_object_name(o):
         return module + "." + o.__class__.__name__
 
 
+def is_builtin_obj(obj):
+    return obj.__class__.__module__ == "builtins"
+
+
 def _attribute_formatter(obj, to_html, indent=1):
+    if is_builtin_obj(obj):
+        return None
+
     if hasattr(obj, "__dict__"):
         attrs = obj.__dict__
-        name = f"Instance of {full_object_name(obj)}"
-        content = _dict_formatter(attrs, to_html, indent)
-        return get_expandable_html(name=name, content=content)
+    else:
+        attrs = [x for x in dir(obj) if not x.startswith("_")]
+        attrs = {name: getattr(obj, name) for name in attrs}
+
+    name = f"Instance of {full_object_name(obj)}"
+    content = _dict_formatter(attrs, to_html, indent)
+    return get_expandable_html(name=name, content=content)
 
 
 def _bytes_formatter(obj, to_html, indent=1):
