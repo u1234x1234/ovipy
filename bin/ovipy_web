@@ -1,0 +1,13 @@
+import argparse
+
+from ovipy import read_obj, show_web
+
+if __name__ == "__main__":
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("path", type=str)
+    arg_parser.add_argument("--host", type=str, default="localhost")
+    arg_parser.add_argument("--port", type=int, default=8000)
+    args = arg_parser.parse_args()
+
+    py_obj = read_obj(args.path)
+    show_web(py_obj, host=args.host, port=args.port)

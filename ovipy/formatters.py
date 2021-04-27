@@ -7,6 +7,7 @@ import pandas as pd
 from .web_templates import expandable_image, get_expandable_html
 
 LIST_LEN_LIMIT = 2
+LIST_CLIP_LIMIT = 1000
 DICT_LEN_LIMIT = 30
 NUMPY_2D_LIMIT = 10
 
@@ -15,6 +16,18 @@ def _list_formatter(obj, to_html, indent=1):
 
     if isinstance(obj, (list, tuple)):
         items = []
+
+        n_items = len(obj)
+        if n_items >= LIST_CLIP_LIMIT:
+            print(f"[OVIPY] List is too large: {n_items}")
+            obj = (
+                list(obj[:10])
+                + ["Skipped items"]
+                + [obj[n_items // 2]]
+                + ["Skipped items"]
+                + list(obj[-10:])
+            )
+
         for k in obj:
             items.append(to_html(k, indent + 1))
 
@@ -22,9 +35,9 @@ def _list_formatter(obj, to_html, indent=1):
             indent,
             ",<br>".join(items),
         )
-        if len(items) > LIST_LEN_LIMIT:
+        if n_items > LIST_LEN_LIMIT:
             list_str = get_expandable_html(
-                f"python list with {len(items)} elements", list_str
+                f"python list with {n_items} elements", list_str
             )
 
         return list_str
@@ -129,8 +142,10 @@ def _attribute_formatter(obj, to_html, indent=1):
     if hasattr(obj, "__dict__"):
         attrs = obj.__dict__
     else:
-        attrs = [x for x in dir(obj) if not x.startswith("_")]
-        attrs = {name: getattr(obj, name) for name in attrs}
+        return None
+        # TODO how to determine objects?
+        # attrs = [x for x in dir(obj) if not x.startswith("_")]
+        # attrs = {name: getattr(obj, name) for name in attrs}
 
     name = f"Instance of {full_object_name(obj)}"
     content = _dict_formatter(attrs, to_html, indent)

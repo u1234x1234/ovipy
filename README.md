@@ -1,10 +1,10 @@
-# ipyov - Interactive visualizer of python objects.
+# ovipy - Interactive visualizer of python objects.
 
 # Usage
 ```python
-from ipyov import show_object
+from ovipy import show_gui
 import requests
-show_object(requests.get("https://en.wikipedia.org/"))
+show_gui(requests.get("https://en.wikipedia.org/"))
 
 import numpy as np # Another example
 import pandas as pd
@@ -17,7 +17,7 @@ complex_object = {
     "df": pd.DataFrame(np.random.uniform(size=(1000, 20))),
     "t_t": torch.rand(20, 5),
 }
-show_object(complex_object)
+show_gui(complex_object)
 ```
 
 <table border="0">
@@ -30,5 +30,5 @@ show_object(complex_object)
 # Installation
 ```
 pip install PyQt5 PyQtWebEngine
-pip install git+https://github.com/u1234x1234/ipyov.git@0.0.2
+pip install git+https://github.com/u1234x1234/ovipy.git@0.0.3
 ```

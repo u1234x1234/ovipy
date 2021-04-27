@@ -2,7 +2,7 @@ HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>pyov</title>
+    <title>ovipy</title>
     <style>
         {css}
     </style>

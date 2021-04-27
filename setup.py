@@ -8,15 +8,15 @@ def read(fname):
 
 
 setup(
-    name="ipyov",
-    version="0.0.1",
+    name="ovipy",
+    version="0.0.3",
     author="u1234x1234",
     author_email="u1234x1234@gmail.com",
-    description=("ipyov"),
+    description=("ovipy"),
     license="MIT",
     keywords="",
-    url="https://github.com/u1234x1234/ipyov",
-    packages=["ipyov"],
+    url="https://github.com/u1234x1234/ovipy",
+    packages=["ovipy"],
     zip_safe=False,
     install_requires=["PyQt5>=5", "PyQtWebEngine>=5", "pandas>=1"],
     long_description=read("README.md"),
@@ -27,5 +27,5 @@ setup(
         "Topic :: Utilities",
         "License :: OSI Approved :: MIT License",
     ],
-    scripts=["bin/read_file_ipyov"],
+    scripts=["bin/ovipy_gui", "bin/ovipy_web"],
 )

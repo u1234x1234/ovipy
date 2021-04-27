@@ -2,6 +2,7 @@ import os
 import sys
 from tempfile import NamedTemporaryFile
 
+from flask import Flask, send_from_directory
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QFont
 from PyQt5.QtWebEngineWidgets import QWebEngineView
@@ -41,7 +42,7 @@ def _init_text_browser(path, font_size=12, sizes=(800, 600)):
     return browser
 
 
-def show_object(obj):
+def show_gui(obj):
     html = obj_to_html(obj)
 
     app = QApplication(sys.argv)
@@ -53,6 +54,28 @@ def show_object(obj):
         browser = _init_text_browser(out_file.name)
         browser.show()
         sys.exit(app.exec_())
+
+
+def create_flask_static_serving_app(path):
+    app = Flask(__name__)
+
+    @app.route("/")
+    def index():
+        return send_from_directory(os.path.dirname(path), os.path.basename(path))
+
+    return app
+
+
+def show_web(obj, host="localhost", port=8090):
+    "Save obj to html and serve it with Flask"
+    html = obj_to_html(obj)
+
+    with NamedTemporaryFile("wb", buffering=0, suffix=".html") as out_file:
+        out_file.write(html.encode("utf-8"))
+        out_file.flush()
+
+        app = create_flask_static_serving_app(out_file.name)
+        app.run(port=port, host=host, debug=False)
 
 
 def save_to_html(obj, path):

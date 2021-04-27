@@ -1,7 +1,7 @@
 import sys
 
-from ipyov import read_obj, show_object
+from ovipy import read_obj, show_gui
 
 if __name__ == "__main__":
     py_obj = read_obj(sys.argv[1])
-    show_object(py_obj)
+    show_gui(py_obj)
